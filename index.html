@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="A responsive frontend Lead Management CRM dashboard.">
+  <title>LeadFlow | Lead Management CRM</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="authScreen" class="auth-screen">
+    <form id="loginForm" class="auth-card">
+      <div class="brand-mark">L</div>
+      <p class="eyebrow">LEADFLOW CRM</p>
+      <h1>Welcome back</h1>
+      <p class="muted">Sign in to manage your sales pipeline.</p>
+      <label>Email address<input id="loginEmail" type="email" value="demo@leadflow.com" required></label>
+      <label>Password<input id="loginPassword" type="password" value="demo123" required></label>
+      <button class="btn primary full" type="submit">Sign in</button>
+      <p class="auth-hint">Demo access: demo@leadflow.com / demo123</p>
+      <button type="button" id="showRegister" class="text-button">Create a demo account</button>
+    </form>
+    <form id="registerForm" class="auth-card hidden">
+      <div class="brand-mark">L</div>
+      <p class="eyebrow">LEADFLOW CRM</p>
+      <h1>Create account</h1>
+      <p class="muted">This is a simulated frontend account.</p>
+      <label>Your name<input id="registerName" required placeholder="Your name"></label>
+      <label>Email address<input id="registerEmail" type="email" required placeholder="you@example.com"></label>
+      <label>Password<input id="registerPassword" type="password" minlength="4" required placeholder="At least 4 characters"></label>
+      <button class="btn primary full" type="submit">Create account</button>
+      <button type="button" id="showLogin" class="text-button">Back to sign in</button>
+    </form>
+  </div>
+
+  <div id="app" class="app-shell hidden">
+    <aside class="sidebar" id="sidebar">
+      <a class="brand" href="#dashboard"><span class="brand-mark small">L</span><span>LeadFlow</span></a>
+      <div class="workspace"><span class="workspace-dot"></span><span>Sales workspace</span><span class="chevron">⌄</span></div>
+      <p class="nav-caption">WORKSPACE</p>
+      <nav class="nav-links">
+        <a href="#dashboard" class="nav-link active" data-page="dashboard"><span>▦</span> Dashboard</a>
+        <a href="#leads" class="nav-link" data-page="leads"><span>♙</span> All leads <b id="navLeadCount">0</b></a>
+        <a href="#pipeline" class="nav-link" data-page="pipeline"><span>▤</span> Pipeline</a>
+        <a href="#followups" class="nav-link" data-page="followups"><span>◷</span> Follow-ups</a>
+        <a href="#reports" class="nav-link" data-page="reports"><span>▥</span> Reports</a>
+      </nav>
+      <div class="sidebar-bottom">
+        <div class="help-card"><div class="help-icon">✦</div><strong>Need a hand?</strong><p>Explore your leads and keep every opportunity moving.</p></div>
+        <button class="nav-link" id="darkToggle"><span>◐</span> Toggle dark mode</button>
+        <button class="nav-link" id="logoutBtn"><span>⇥</span> Log out</button>
+        <div class="profile-mini"><div class="avatar" id="userAvatar">A</div><div><strong id="userName">Admin User</strong><small id="userEmail">demo@leadflow.com</small></div><span class="more">•••</span></div>
+      </div>
+    </aside>
+
+    <main class="main-area">
+      <header class="topbar">
+        <button class="icon-btn mobile-menu" id="menuToggle" aria-label="Open menu">☰</button>
+        <div class="breadcrumb">Workspace <span>/</span> <strong id="pageCrumb">Dashboard</strong></div>
+        <div class="top-actions"><span class="today-label" id="todayLabel"></span><button class="icon-btn" title="Notifications">♧</button><div class="avatar top-avatar" id="topAvatar">A</div></div>
+      </header>
+
+      <section class="page active" id="page-dashboard">
+        <div class="page-heading"><div><p class="eyebrow">OVERVIEW</p><h1>Good to see you, <span id="welcomeName">Admin</span> 👋</h1><p class="muted">Here’s what’s happening with your sales pipeline today.</p></div><button class="btn primary" data-action="add-lead">＋ Add new lead</button></div>
+        <div class="stats-grid">
+          <article class="stat-card"><div class="stat-top"><span>Total leads</span><span class="stat-icon green">♙</span></div><strong id="statTotal">0</strong><small class="positive">Across your pipeline</small></article>
+          <article class="stat-card"><div class="stat-top"><span>New leads</span><span class="stat-icon blue">✦</span></div><strong id="statNew">0</strong><small>Awaiting first contact</small></article>
+          <article class="stat-card"><div class="stat-top"><span>Qualified</span><span class="stat-icon purple">⌕</span></div><strong id="statQualified">0</strong><small>Sales-ready opportunities</small></article>
+          <article class="stat-card"><div class="stat-top"><span>Conversion rate</span><span class="stat-icon orange">↗</span></div><strong id="statRate">0%</strong><small>Converted / total leads</small></article>
+        </div>
+        <div class="dashboard-grid">
+          <article class="panel pipeline-panel"><div class="panel-heading"><div><h2>Pipeline overview</h2><p class="muted">Lead distribution by current status</p></div><a href="#pipeline" class="inline-link">View pipeline →</a></div><div id="pipelineBars" class="pipeline-bars"></div></article>
+          <article class="panel source-panel"><div class="panel-heading"><div><h2>Lead sources</h2><p class="muted">Where your leads come from</p></div></div><div id="sourceChart" class="source-chart"></div></article>
+        </div>
+        <article class="panel"><div class="panel-heading"><div><h2>Recent leads</h2><p class="muted">Your latest opportunities</p></div><a href="#leads" class="inline-link">View all →</a></div><div class="table-wrap"><table><thead><tr><th>LEAD</th><th>COMPANY</th><th>SOURCE</th><th>STATUS</th><th>ADDED</th><th></th></tr></thead><tbody id="recentTable"></tbody></table></div></article>
+      </section>
+
+      <section class="page" id="page-leads">
+        <div class="page-heading"><div><p class="eyebrow">YOUR CONTACTS</p><h1>All leads</h1><p class="muted">Manage and organize every sales opportunity in one place.</p></div><button class="btn primary" data-action="add-lead">＋ Add new lead</button></div>
+        <div class="panel filters-panel"><div class="search-box"><span>⌕</span><input id="leadSearch" placeholder="Search name, email or company..."></div><select id="statusFilter"><option value="">All statuses</option><option>New</option><option>Contacted</option><option>Qualified</option><option>Lost</option><option>Converted</option></select><select id="sourceFilter"><option value="">All sources</option><option>Website</option><option>Referral</option><option>Social Media</option><option>Advertisement</option><option>Event</option><option>Other</option></select><select id="sortLeads"><option value="newest">Newest first</option><option value="oldest">Oldest first</option><option value="name">Name A–Z</option><option value="score">Highest score</option></select></div>
+        <article class="panel"><div class="panel-heading"><div><h2>Lead directory</h2><p class="muted" id="leadResultCount">0 leads</p></div><button class="btn secondary" id="exportBtn">↓ Export CSV</button></div><div class="table-wrap"><table><thead><tr><th>LEAD</th><th>COMPANY</th><th>PHONE</th><th>SOURCE</th><th>SCORE</th><th>STATUS</th><th>ADDED</th><th>ACTIONS</th></tr></thead><tbody id="leadsTable"></tbody></table></div><div id="emptyLeads" class="empty-state hidden">No leads found. Try changing your filters or add a new lead.</div></article>
+      </section>
+
+      <section class="page" id="page-pipeline">
+        <div class="page-heading"><div><p class="eyebrow">SALES PIPELINE</p><h1>Lead status board</h1><p class="muted">Move opportunities through each stage of your sales process.</p></div><button class="btn primary" data-action="add-lead">＋ Add new lead</button></div>
+        <div class="kanban-board" id="kanbanBoard"></div>
+      </section>
+
+      <section class="page" id="page-followups">
+        <div class="page-heading"><div><p class="eyebrow">STAY CONNECTED</p><h1>Follow-ups</h1><p class="muted">Never miss an opportunity to connect with a lead.</p></div><button class="btn primary" id="addFollowupBtn">＋ Schedule follow-up</button></div>
+        <div class="stats-grid compact-stats"><article class="stat-card"><span>All follow-ups</span><strong id="followTotal">0</strong></article><article class="stat-card"><span>Upcoming</span><strong id="followUpcoming">0</strong></article><article class="stat-card"><span>Completed</span><strong id="followCompleted">0</strong></article></div>
+        <article class="panel"><div class="panel-heading"><div><h2>Follow-up schedule</h2><p class="muted">Scheduled calls, emails and meetings</p></div><select id="followFilter"><option value="">All activities</option><option value="pending">Pending</option><option value="completed">Completed</option></select></div><div id="followupList" class="followup-list"></div></article>
+      </section>
+
+      <section class="page" id="page-reports">
+        <div class="page-heading"><div><p class="eyebrow">PERFORMANCE</p><h1>Reports & insights</h1><p class="muted">Understand your pipeline health and lead generation.</p></div><button class="btn secondary" id="reportExport">↓ Export leads</button></div>
+        <div class="stats-grid"><article class="stat-card"><span>Conversion rate</span><strong id="reportRate">0%</strong><small>Of all captured leads</small></article><article class="stat-card"><span>Open opportunities</span><strong id="reportOpen">0</strong><small>New, contacted and qualified</small></article><article class="stat-card"><span>Lost leads</span><strong id="reportLost">0</strong><small>Marked as lost</small></article><article class="stat-card"><span>Average lead score</span><strong id="reportScore">0</strong><small>Out of 100 points</small></article></div>
+        <div class="dashboard-grid"><article class="panel"><div class="panel-heading"><div><h2>Conversion by status</h2><p class="muted">Current lead distribution</p></div></div><div id="reportStatus" class="report-status"></div></article><article class="panel"><div class="panel-heading"><div><h2>Source performance</h2><p class="muted">Lead volume by acquisition channel</p></div></div><div id="reportSources" class="report-sources"></div></article></div>
+        <article class="panel"><div class="panel-heading"><div><h2>Activity timeline</h2><p class="muted">Latest updates across your leads</p></div></div><div id="activityTimeline" class="timeline"></div></article>
+      </section>
+    </main>
+  </div>
+
+  <div id="leadModal" class="modal hidden"><div class="modal-backdrop" data-close="lead"></div><div class="modal-card"><div class="modal-heading"><div><p class="eyebrow">LEAD DETAILS</p><h2 id="leadModalTitle">Add new lead</h2></div><button class="icon-btn" data-close="lead">✕</button></div><form id="leadForm" class="form-grid"><input type="hidden" id="leadId"><label>Full name *<input id="leadName" required placeholder="e.g. Alex Morgan"></label><label>Email address *<input id="leadEmail" type="email" required placeholder="alex@company.com"></label><label>Phone number<input id="leadPhone" type="tel" placeholder="+91 98765 43210"></label><label>Company<input id="leadCompany" placeholder="Company name"></label><label>Lead source<select id="leadSource"><option>Website</option><option>Referral</option><option>Social Media</option><option>Advertisement</option><option>Event</option><option>Other</option></select></label><label>Status<select id="leadStatus"><option>New</option><option>Contacted</option><option>Qualified</option><option>Lost</option><option>Converted</option></select></label><label>Lead score (0–100)<input id="leadScore" type="number" min="0" max="100" value="50"></label><label class="span-two">Notes<textarea id="leadNotes" rows="3" placeholder="Add context, interests or next steps..."></textarea></label><div class="form-actions span-two"><button type="button" class="btn secondary" data-close="lead">Cancel</button><button type="submit" class="btn primary">Save lead</button></div></form></div></div>
+
+  <div id="detailModal" class="modal hidden"><div class="modal-backdrop" data-close="detail"></div><div class="modal-card detail-card"><div class="modal-heading"><div><p class="eyebrow">LEAD PROFILE</p><h2 id="detailName">Lead details</h2></div><button class="icon-btn" data-close="detail">✕</button></div><div id="detailContent"></div></div></div>
+
+  <div id="followModal" class="modal hidden"><div class="modal-backdrop" data-close="follow"></div><div class="modal-card"><div class="modal-heading"><div><p class="eyebrow">PLAN A TOUCHPOINT</p><h2>Schedule follow-up</h2></div><button class="icon-btn" data-close="follow">✕</button></div><form id="followForm" class="form-grid"><label class="span-two">Lead *<select id="followLead" required></select></label><label>Activity type<select id="followType"><option>Call</option><option>Email</option><option>Meeting</option><option>Message</option></select></label><label>Date & time<input id="followDate" type="datetime-local" required></label><label class="span-two">Notes<textarea id="followNotes" rows="3" placeholder="What should be discussed?"></textarea></label><div class="form-actions span-two"><button type="button" class="btn secondary" data-close="follow">Cancel</button><button class="btn primary" type="submit">Schedule follow-up</button></div></form></div></div>
+  <div id="toast" class="toast"></div>
+  <script src="script.js"></script>
+</body>
+</html>
